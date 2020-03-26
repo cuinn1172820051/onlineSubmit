@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.onlineSubmit.dao.ExpertDao">
+	<select id="findExpertByUserName" parameterType="String" resultType="Expert">
+  		select * from expert where username = #{username}
+  	</select>
+  	<select id="findDistributeList" resultType="Distribute">
+  		select * from distribute
+  	</select>
+  	<select id="findManuscriptListByExpert" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where manuscript_id in ( ${idstr} ) and state like #{state} limit #{offset},#{pageSize}
+  	</select>
+  	<select id="getManuscriptTotalByExpert" parameterType="String" resultType="Integer">
+  		select count(*) from manuscript where manuscript_id in ( ${idstr} ) and state like #{state}
+  	</select>
+  	<update id="editManuscriptByManuscript" parameterType="Map">
+  		update manuscript set state = #{state} where manuscript_id = #{manuscript_id}
+  	</update>
+  	<update id="addExpertReviewInfo" parameterType="Map">
+  		insert into expert_review(expert_review_id,manuscript_id,expert_id,expert_opinion,expert_review_time) values(null,#{manuscript_id},#{expert_id},#{expert_opinion},#{expert_review_time})
+  	</update>
+  	<select id="queryOwnInfoByExpert" parameterType="Integer" resultType="Expert">
+  		select * from expert where expert_id = #{expert_id}
+  	</select>
+  	<update id="editOwnInfoByExpert" parameterType="Expert">
+  		update expert set username = #{username},password = #{password},expert_name = #{expert_name},sex = #{sex},phone_number = #{phone_number},address=#{address} where expert_id = #{expert_id}
+  	</update>
+  	<select id="findManuscriptNoReviewListByExpert" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where manuscript_id in ( ${idstr} ) and state = #{state} limit #{offset},#{pageSize}
+  	</select>
+  		<select id="getManuscriptTotalNoReviewByExpert" parameterType="Map" resultType="Integer">
+  		select count(*) from manuscript where manuscript_id in ( ${idstr} ) and state = #{state}
+  	</select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.onlineSubmit.dao.EditorDao">
+	<select id="findEditorByUserName" parameterType="String" resultType="Editor">
+  		select * from editor where username = #{username}
+  	</select>
+  	<select id="findManuscriptList" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where state like #{state} limit #{offset},#{pageSize}
+  	</select>
+  	 <select id="getTotalByEditor" parameterType="Map" resultType="Integer">
+  		select count(*) from manuscript where state like #{state}
+  	</select>
+  	<select id="queryOwnInfoByEditor" resultType="Editor">
+  		select * from editor 
+  	</select>
+  	<update id="editOwnInfoByEditor" parameterType="Editor">
+  		update editor set username = #{username},password = #{password},editor_name = #{editor_name},sex = #{sex} where editor_id = #{editor_id}
+  	</update>
+  	<select id="findUserList" parameterType="Map" resultType="User">
+  		select * from user where username like #{username} limit #{offset},#{pageSize}
+  	</select>
+  	<select id="getUserTotalByEditor" parameterType="Map" resultType="Integer">
+  		select count(*) from user where username like #{username}
+  	</select>
+  	<update id="editUserInfo" parameterType="User">
+  		update user set username = #{username},password = #{password},author_name = #{author_name},sex = #{sex},phone_number = #{phone_number},address=#{address} where id = #{id}
+  	</update>
+  	<update id="deleteUserInfo" parameterType="String">
+  		delete from user where id in (${value})
+  	</update>
+  	<select id="queryUserInfoByUsername" parameterType="String" resultType="User">
+  		select * from user where username = #{username}
+  	</select>
+  	<select id="queryExpertInfo" resultType="Expert">
+  		select * from expert
+  	</select>
+  		<update id="editExpertInfo" parameterType="Expert">
+  		update expert set username = #{username},password = #{password},expert_name = #{expert_name},sex = #{sex},phone_number = #{phone_number},address=#{address}  where expert_id = #{expert_id}
+  	</update>
+  	<update id="deleteExpertInfo" parameterType="String">
+  		delete from expert where expert_id in (${value})
+  	</update>
+  	<select id="findNavList" parameterType="Map" resultType="Nav">
+  		select * from nav
+  	</select>
+  	<select id="getNavTotalByEditor" parameterType="Map" resultType="Integer">
+  		select count(*) from nav
+  	</select>
+  	<select id="findByNavName" parameterType="String" resultType="Nav">
+  		select * from nav where nav_name = #{nav_name}
+  	</select>
+  	<update id="addNavInfo" parameterType="Nav">
+  		insert into nav(nav_name) values(#{nav_name})
+  	</update>
+  	<update id="deleteNavInfo" parameterType="String">
+  		delete from nav where nav_id in (${value})
+  	</update>
+  	<update id="editNavInfo" parameterType="User">
+  		update nav set nav_name = #{nav_name} where nav_id = #{nav_id}
+  	</update>
+  	<select id="findManuscriptListByNavId" parameterType="String" resultType="Manuscript">
+  		select * from manuscript where nav_id in (${value})
+  	</select>
+  	<update id="addDistributeInfo" parameterType="Distribute">
+  		insert into distribute(distribute_id,distribute_num,distribute_idstring) values(null,#{distribute_num},#{distribute_idstring})
+  	</update>
+  	<update id="updateManuscriptReMarks" parameterType="Map">
+  		update manuscript set remarks = #{remarks} where manuscript_id in (${ids})
+  	</update>
+  	<select id="queryExpertReviewList" resultType="ExpertReview">
+  		select * from expert_review
+  	</select>
+  	<select id="findManuscriptListByEditorReview" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where manuscript_id in (${manuscript_ids}) and state = #{state} limit #{offset},#{pageSize}
+  	</select>
+  	<select id="getManuscriptTotalByEditor" parameterType="Map" resultType="Integer">
+  		select count(*) from manuscript where manuscript_id in (${manuscript_ids}) and state = #{state}
+  	</select>
+  	<update id="addEditorReviewInfo" parameterType="Map">
+  		insert into editor_review(editor_review_id,manuscript_id,editor_id,editor_opinion,editor_review_time) values(null,#{manuscript_id},#{editor_id},#{editor_opinion},#{editor_review_time})
+  	</update>
+  	<select id="findManuscriptListNodDistribute" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where state = #{state} limit #{offset},#{pageSize}
+  	</select>
+  	 <select id="getTotalByEditorNodDistribute" parameterType="Map" resultType="Integer">
+  		select count(*) from manuscript where state = #{state}
+  	</select>
+</mapper>

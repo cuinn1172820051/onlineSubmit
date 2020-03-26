@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.onlineSubmit.dao.AuthorDao">
+ 	<update id="add" parameterType="Manuscript">
+ 		insert into manuscript(manuscript_id,id,author_name,title,summary,submit_time,filePath,state,nav_id) values(null,#{id},#{author_name},#{title},#{summary},#{submit_time},#{filePath},#{state},#{nav_id})
+ 	</update>
+ 	<update id="editOwnInfo" parameterType="User">
+  		update user set username = #{username},password = #{password},author_name = #{author_name},sex = #{sex},phone_number = #{phone_number},address=#{address} where id = #{id}
+  	</update>
+ 	<select id="findList" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where author_name like #{author_name} and title like #{title} limit #{offset},#{pageSize}
+  	</select>
+  	<select id="getTotal" parameterType="Map" resultType="Integer">
+  		select count(*) from manuscript where id=#{id} and state like #{state}
+  	</select>
+  	<select id="queryOwnInfo" parameterType="Integer" resultType="User">
+  		select * from user where id = #{id} 
+  	</select>
+  	<select id="findListById" parameterType="Map" resultType="Manuscript">
+  		select * from manuscript where id = #{id} and state like #{state} limit #{offset},#{pageSize}
+  	</select>
+</mapper>
